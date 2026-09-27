@@ -7,14 +7,14 @@ A tiny Neovim practice game: pull real source code from GitHub, alter it, then r
 `vimdo cpp` picks a real C++ file and launches:
 
 ```text
-ORIGINAL (read-only)          CHALLENGE (you edit this)
-────────────────────          ─────────────────────────
-correct code                  altered code
-correctName                   weirdName
-42                            49
+CHALLENGE (you edit this)      REFERENCE (read-only)
+─────────────────────────      ─────────────────────
+altered code                   correct code
+weirdName                      correctName
+49                             42
 ```
 
-Neovim's built-in diff highlighting disappears as you repair the right side.
+Neovim's built-in diff highlighting disappears as you repair the left side.
 
 ## Requirements
 
@@ -60,9 +60,9 @@ The built-in pool is only a starting point. `--repo owner/repo` lets you point i
 
 ## Rules / intended play
 
-- Left pane is the real original and is locked read-only.
-- Right pane is the altered challenge.
-- Get the right pane byte-for-byte equal to the left pane.
+- Left pane is the altered challenge and is where you edit.
+- Right pane is the real original reference and is locked read-only.
+- Get the left pane byte-for-byte equal to the right pane.
 - `]c` and `[c` jump between diff hunks.
 - `do` / `dp` normal-mode diff-copy shortcuts are disabled so you actually practice editing.
 - The mutation manifest is saved with the challenge, but hidden during normal play. Use `--show-mutations` only for debugging.

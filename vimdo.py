@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 APP = "vimdo"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 CACHE_DIR = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / APP / "repos"
 STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / APP / "challenges"
 
@@ -458,8 +458,8 @@ def print_intro(language: str, repo: str, relative_file: Path, original: str, mu
     print(f"File     : {relative_file.as_posix()} ({line_count} lines)")
     print(f"Mutations: {len(mutations)} edits / {changed_occurrences} changed occurrence(s)")
     print()
-    print("Left  = original (read-only)")
-    print("Right = altered challenge (edit this until the diff disappears)")
+    print("Left  = altered challenge (edit this until the diff disappears)")
+    print("Right = original reference (read-only)")
     print()
     print("Useful diff navigation: ]c next change, [c previous change")
     print("Diff-copy shortcuts do/dp are disabled so you practice editing.")
@@ -472,15 +472,15 @@ def launch_nvim(original: Path, challenge: Path) -> int:
     # diff-copy normal mappings in both panes so the exercise stays an editing drill.
     cmds = [
         "set diffopt+=vertical",
-        "wincmd h",
+        "wincmd l",
         "setlocal readonly nomodifiable",
         "nnoremap <buffer> do <Cmd>echo 'vimdo: diff-copy disabled'<CR>",
         "nnoremap <buffer> dp <Cmd>echo 'vimdo: diff-copy disabled'<CR>",
-        "wincmd l",
+        "wincmd h",
         "nnoremap <buffer> do <Cmd>echo 'vimdo: diff-copy disabled'<CR>",
         "nnoremap <buffer> dp <Cmd>echo 'vimdo: diff-copy disabled'<CR>",
     ]
-    cmd = ["nvim", "-d", "-O", str(original), str(challenge)]
+    cmd = ["nvim", "-d", "-O", str(challenge), str(original)]
     for ex in cmds:
         cmd.extend(["-c", ex])
     return subprocess.call(cmd)
@@ -654,7 +654,7 @@ def main() -> int:
         print((out / "challenge.txt").read_text(encoding="utf-8"))
 
     if args.no_open:
-        print(f"Open manually: nvim -d {original_path} {challenge_path}")
+        print(f"Open manually: nvim -d {challenge_path} {original_path}")
         return 0
 
     started = time.monotonic()
