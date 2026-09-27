@@ -96,3 +96,25 @@ The first version deliberately stays dependency-free. It mutates:
 It does not try to preserve compilation. The exercise is text manipulation, not understanding or fixing program semantics.
 
 A future Tree-sitter version can distinguish function names, parameters, locals, members, strings, operators, comments, and language scopes more precisely.
+
+## Uninstall
+
+Remove Vimdo completely, including the executable, cached repositories, and saved challenges:
+
+```bash
+./uninstall.sh
+```
+
+Remove only the Vimdo executable and keep cached repositories and saved challenges:
+
+```bash
+./uninstall.sh --keep-data
+```
+
+Vimdo stores its files in:
+
+```text
+~/.local/bin/vimdo
+~/.cache/vimdo
+~/.local/state/vimdo
+```
